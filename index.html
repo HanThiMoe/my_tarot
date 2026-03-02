@@ -3,46 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Mystic Oracle - 78 Tarot Cards Edition</title>
+    <title>AI Mystic Tarot - 78 Cards Edition</title>
     <style>
         :root { --gold: #ffd700; --purple: #2d0b5a; --dark: #0f051d; --text: #f0f0f0; }
-        body { font-family: 'Pyidaungsu', 'Segoe UI', sans-serif; background: var(--dark); color: var(--text); margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
-        .container { background: rgba(45, 11, 90, 0.95); padding: 25px; border-radius: 20px; border: 2px solid var(--gold); max-width: 600px; width: 92%; text-align: center; box-shadow: 0 0 50px rgba(0,0,0,0.8); }
-        h1 { color: var(--gold); text-shadow: 0 0 15px rgba(255, 215, 0, 0.5); margin-bottom: 10px; }
+        body { font-family: 'Pyidaungsu', sans-serif; background: var(--dark); color: var(--text); margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        .container { background: rgba(45, 11, 90, 0.95); padding: 25px; border-radius: 20px; border: 2px solid var(--gold); max-width: 500px; width: 90%; text-align: center; box-shadow: 0 0 30px rgba(0,0,0,0.5); }
         .input-group { text-align: left; margin-bottom: 15px; }
-        label { color: var(--gold); font-size: 0.9em; display: block; margin-bottom: 5px; }
-        select, input, textarea { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--gold); background: #1a0836; color: white; box-sizing: border-box; font-family: inherit; }
-        button { background: linear-gradient(45deg, #ffd700, #b8860b); color: #000; padding: 15px; border: none; border-radius: 50px; font-weight: bold; cursor: pointer; width: 100%; font-size: 1.1em; margin-top: 15px; transition: 0.3s; }
-        button:hover { transform: scale(1.02); box-shadow: 0 0 15px var(--gold); }
+        label { color: var(--gold); display: block; margin-bottom: 5px; font-size: 0.9em; }
+        select, input, textarea { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--gold); background: #1a0836; color: white; box-sizing: border-box; }
         
-        /* Card Animation */
+        /* အဝါရောင် Button */
+        .yellow-btn { background: var(--gold); color: #000; padding: 15px; border: none; border-radius: 50px; font-weight: bold; cursor: pointer; width: 100%; font-size: 1.1em; margin-top: 15px; transition: 0.3s; }
+        .yellow-btn:hover { background: #fff; box-shadow: 0 0 20px var(--gold); }
+        
+        .hidden { display: none !important; }
+        
+        /* Cards Animation */
         .card-container { display: flex; justify-content: center; gap: 10px; margin-top: 25px; flex-wrap: wrap; }
-        .card { width: 95px; height: 165px; perspective: 1000px; cursor: pointer; }
-        .card-inner { position: relative; width: 100%; height: 100%; transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform-style: preserve-3d; }
+        .card { width: 90px; height: 155px; perspective: 1000px; cursor: pointer; }
+        .card-inner { position: relative; width: 100%; height: 100%; transition: transform 0.6s; transform-style: preserve-3d; }
         .card.flipped .card-inner { transform: rotateY(180deg); }
-        .card-front, .card-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 10px; border: 2px solid var(--gold); overflow: hidden; }
-        .card-back { background: #311b92; display: flex; align-items: center; justify-content: center; font-size: 2em; color: var(--gold); background-image: radial-gradient(circle, #4527a0 1px, transparent 1px); background-size: 10px 10px; }
-        .card-front img { width: 100%; height: 100%; object-fit: cover; }
+        .card-front, .card-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 8px; border: 2px solid var(--gold); }
+        .card-back { background: #311b92; display: flex; align-items: center; justify-content: center; font-size: 2em; color: var(--gold); }
+        .card-front img { width: 100%; height: 100%; object-fit: cover; border-radius: 6px; }
 
-        .result-box { margin-top: 25px; padding: 20px; background: rgba(0,0,0,0.7); border-radius: 15px; border-top: 4px solid var(--gold); text-align: left; line-height: 1.8; display: none; animation: fadeIn 1s; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        .hidden { display: none; }
-        #loading { color: var(--gold); font-style: italic; margin: 20px; display: none; }
-        .highlight { color: var(--gold); font-weight: bold; }
+        .result-box { margin-top: 20px; padding: 15px; background: rgba(0,0,0,0.7); border-radius: 12px; border-left: 5px solid var(--gold); text-align: left; line-height: 1.8; display: none; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <div id="screen1">
-        <h1>🔮 AI Mystic Oracle</h1>
-        <p style="font-size: 0.9em; color: #b39ddb;">၇၈ ကဒ်လုံးဖြင့် တိကျစွာ ဟောကြားပေးသော AI စနစ်</p>
+    <div id="setup-screen">
+        <h1 style="color: var(--gold); margin-top: 0;">🔮 AI Mystic Oracle</h1>
         <div class="input-group">
             <label>ဘာအကြောင်း သိချင်တာလဲ?</label>
             <select id="topic">
                 <option value="Love">❤️ အချစ်ရေးနှင့် လူမှုရေး</option>
                 <option value="Money">💰 စီးပွားရေးနှင့် ငွေကြေး</option>
-                <option value="Work">💼 အလုပ်အကိုင်နှင့် ပညာရေး</option>
                 <option value="Health">💪 ကျန်းမာရေးနှင့် အထွေထွေ</option>
             </select>
         </div>
@@ -51,150 +48,106 @@
             <input type="date" id="dob">
         </div>
         <div class="input-group">
-            <label>သိလိုသော မေးခွန်း (အာရုံစိုက်ပြီး ရေးပါ)</label>
-            <textarea id="question" rows="3" placeholder="ဥပမာ- ကျွန်တော် မကြာခင် အလုပ်အသစ် ရနိုင်ပါ့မလား?"></textarea>
+            <label>မေးမြန်းလိုသည့် မေးခွန်း</label>
+            <textarea id="question" rows="2" placeholder="ဥပမာ- ကျွန်တော် အလုပ်အဆင်ပြေပါ့မလား?"></textarea>
         </div>
-        <button onclick="startReading()">ကံကြမ္မာကို စစ်ဆေးမည်</button>
+        <button class="yellow-btn" onclick="switchScreen()">ကံကြမ္မာကို စစ်ဆေးမည်</button>
     </div>
-    <div id="screen2" class="hidden">
-        <h3 id="zodiac-info" style="color: var(--gold);"></h3>
-        <p>အာရုံပြုပြီး ကဒ် (၃) ကဒ်ကို ရွေးချယ်ပါ</p>
+
+    <div id="card-screen" class="hidden">
+        <h3 style="color: var(--gold);">ကတ် (၃) ကတ်ကို ရွေးချယ်ပါ</h3>
+        <p style="font-size: 0.85em;">အတိတ်၊ ပစ္စုပ္ပန်၊ အနာဂတ်အတွက် အာရုံပြုနှိပ်ပါ</p>
         <div class="card-container">
-            <div class="card" onclick="flip(this, 1)"><div class="card-inner"><div class="card-back">✨</div><div class="card-front"><img id="img1"></div></div></div>
-            <div class="card" onclick="flip(this, 2)"><div class="card-inner"><div class="card-back">✨</div><div class="card-front"><img id="img2"></div></div></div>
-            <div class="card" onclick="flip(this, 3)"><div class="card-inner"><div class="card-back">✨</div><div class="card-front"><img id="img3"></div></div></div>
+            <div class="card" onclick="pickCard(this, 1)"><div class="card-inner"><div class="card-back">✨</div><div class="card-front"><img id="img1"></div></div></div>
+
+            <div class="card" onclick="pickCard(this, 2)"><div class="card-inner"><div class="card-back">✨</div><div class="card-front"><img id="img2"></div></div></div>
+            <div class="card" onclick="pickCard(this, 3)"><div class="card-inner"><div class="card-back">✨</div><div class="card-front"><img id="img3"></div></div></div>
         </div>
-        <div id="loading">AI က မင်းရဲ့ ကံကြမ္မာကို တွက်ချက်နေပါပြီ...</div>
-        <div id="result" class="result-box"></div>
-        <button id="reset-btn" class="hidden" onclick="location.reload()">အစမှ ပြန်မေးမည်</button>
+        <div id="final-result" class="result-box"></div>
+        <button id="reset-btn" class="yellow-btn hidden" onclick="location.reload()">အစမှ ပြန်မေးမည်</button>
     </div>
 </div>
 
 <script>
-    // Full 78 Cards Data with Category-specific meanings
-    const tarotDB = [
-        { n: "The Fool", u: "https://upload.wikimedia.org/wikipedia/en/9/90/RWS_Tarot_00_Fool.jpg", m: { Love: "အချစ်သစ်စတင်ခြင်း", Money: "စွန့်စားရမည့် အခွင့်အလမ်း", Work: "အလုပ်သစ်စတင်ခြင်း", Health: "စွမ်းအင်အသစ်ရခြင်း" } },
-        { n: "The Magician", u: "https://upload.wikimedia.org/wikipedia/en/d/de/RWS_Tarot_01_Magician.jpg", m: { Love: "ဆွဲဆောင်မှုရှိနေခြင်း", Money: "ဝင်ငွေလမ်းစပေါ်ခြင်း", Work: "ကျွမ်းကျင်မှုပြသနိုင်ခြင်း", Health: "မြန်မြန်ပြန်ကောင်းခြင်း" } },
-        { n: "The High Priestess", u: "https://upload.wikimedia.org/wikipedia/en/8/88/RWS_Tarot_02_High_Priestess.jpg", m: { Love: "လျှို့ဝှက်သောအချစ်", Money: "စောင့်ကြည့်ရမည့်အချိန်", Work: "ပညာရရှိခြင်း", Health: "စိတ်အနားယူရန်လိုခြင်း" } },
-        { n: "The Empress", u: "https://upload.wikimedia.org/wikipedia/en/d/d2/RWS_Tarot_03_Empress.jpg", m: { Love: "သာယာစိုပြေခြင်း", Money: "ကြွယ်ဝချမ်းသာခြင်း", Work: "အောင်မြင်ဖြစ်ထွန်းခြင်း", Health: "ကိုယ်ဝန်ဆောင်/ကျန်းမာခြင်း" } },
-        { n: "The Emperor", u: "https://upload.wikimedia.org/wikipedia/en/c/c3/RWS_Tarot_04_Emperor.jpg", m: { Love: "တည်ငြိမ်သောအချစ်", Money: "ငွေကြေးထိန်းချုပ်နိုင်ခြင်း", Work: "ရာထူးတိုးခြင်း", Health: "စနစ်တကျနေထိုင်ရန်" } },
-        { n: "The Hierophant", u: "https://upload.wikimedia.org/wikipedia/en/8/8d/RWS_Tarot_05_Hierophant.jpg", m: { Love: "လက်ထပ်ထိမ်းမြားခြင်း", Money: "ရိုးရာအတိုင်းရင်းနှီးခြင်း", Work: "ဆရာကောင်းရခြင်း", Health: "ဆေးကုသမှုအောင်မြင်ခြင်း" } },
-        { n: "The Lovers", u: "https://upload.wikimedia.org/wikipedia/en/d/db/RWS_Tarot_06_Lovers.jpg", m: { Love: "ဖူးစာဖက်နှင့်တွေ့ခြင်း", Money: "ဖက်စပ်လုပ်ကိုင်ခြင်း", Work: "ရွေးချယ်မှုပြုလုပ်ရခြင်း", Health: "မျှတစွာနေထိုင်ရန်" } },
-        { n: "The Chariot", u: "https://upload.wikimedia.org/wikipedia/en/9/9b/RWS_Tarot_07_Chariot.jpg", m: { Love: "အခက်အခဲကိုကျော်လွှားခြင်း", Money: "ငွေကြေးအောင်မြင်မှု", Work: "ခရီးသွားရခြင်း", Health: "ဇွဲရှိရန်လိုခြင်း" } },
-        { n: "Strength", u: "https://upload.wikimedia.org/wikipedia/en/f/f2/RWS_Tarot_08_Strength.jpg", m: { Love: "သည်းခံခြင်းဖြင့်အောင်မြင်ခြင်း", Money: "ငွေကြေးခိုင်မာခြင်း", Work: "ယုံကြည်မှုရှိခြင်း", Health: "ကိုယ်ခံအားကောင်းခြင်း" } },
-        { n: "The Hermit", u: "https://upload.wikimedia.org/wikipedia/en/4/4d/RWS_Tarot_09_Hermit.jpg", m: { Love: "တစ်ယောက်တည်းစဉ်းစားခြင်း", Money: "ငွေအသုံးအစွဲသတိထားရန်", Work: "အတွေ့အကြုံယူရန်", Health: "အနားယူရန်လိုခြင်း" } },
-        { n: "Wheel of Fortune", u: "https://upload.wikimedia.org/wikipedia/en/3/3c/RWS_Tarot_10_Wheel_of_Fortune.jpg", m: { Love: "ကံကြမ္မာအပြောင်းအလဲ", Money: "ရုတ်တရက်ငွေဝင်ခြင်း", Work: "အခွင့်အလမ်းကောင်းရခြင်း", Health: "စက်ဝန်းပြောင်းလဲခြင်း" } },
-        { n: "Justice", u: "https://upload.wikimedia.org/wikipedia/en/e/e0/RWS_Tarot_11_Justice.jpg", m: { Love: "မျှတသောဆက်ဆံရေး", Money: "စာချုပ်စာတမ်းအောင်မြင်ခြင်း", Work: "တရားမျှတမှုရရှိခြင်း", Health: "ဆေးစစ်ရန်လိုခြင်း" } },
-
-        { n: "The Hanged Man", u: "https://upload.wikimedia.org/wikipedia/en/2/2b/RWS_Tarot_12_Hanged_Man.jpg", m: { Love: "စောင့်ဆိုင်းရဦးမည်", Money: "ငွေရပ်တန့်နေခြင်း", Work: "အမြင်သစ်ဖြင့်ကြည့်ရန်", Health: "သွေးတိုးသတိထားရန်" } },
-        { n: "Death", u: "https://upload.wikimedia.org/wikipedia/en/d/d7/RWS_Tarot_13_Death.jpg", m: { Love: "ဟောင်းနွမ်းသောအချစ်ကုန်ဆုံးခြင်း", Money: "အရှုံးပေါ်နိုင်ခြင်း", Work: "အလုပ်ထွက်/ပြောင်းခြင်း", Health: "အကြီးစားပြောင်းလဲမှု" } },
-        { n: "Temperance", u: "https://upload.wikimedia.org/wikipedia/en/f/f8/RWS_Tarot_14_Temperance.jpg", m: { Love: "ညှိနှိုင်းအဆင်ပြေခြင်း", Money: "ငွေဝင်ငွေထွက်မျှခြင်း", Work: "အေးအေးဆေးဆေးလုပ်ရန်", Health: "ရေများများသောက်ရန်" } },
-        { n: "The Devil", u: "https://upload.wikimedia.org/wikipedia/en/5/55/RWS_Tarot_15_Devil.jpg", m: { Love: "စွဲလမ်းလွန်းခြင်း", Money: "အကြွေးပတ်လည်ဝိုင်းခြင်း", Work: "ဖိအားများခြင်း", Health: "အကျင့်ဆိုးကြောင့်ဖျားခြင်း" } },
-        { n: "The Tower", u: "https://upload.wikimedia.org/wikipedia/en/9/9b/RWS_Tarot_16_Tower.jpg", m: { Love: "လမ်းခွဲရခြင်း/ရန်ဖြစ်ခြင်း", Money: "ရုတ်တရက်ဆုံးရှုံးခြင်း", Work: "အလုပ်ပြုတ်ခြင်း", Health: "မတော်တဆသတိထားရန်" } },
-        { n: "The Star", u: "https://upload.wikimedia.org/wikipedia/en/d/db/RWS_Tarot_17_Star.jpg", m: { Love: "မျှော်လင့်ချက်သစ်ပေါ်ခြင်း", Money: "ပြန်လည်ကောင်းမွန်လာခြင်း", Work: "နာမည်ကျော်ခြင်း", Health: "ရောဂါပျောက်ကင်းခြင်း" } },
-        { n: "The Moon", u: "https://upload.wikimedia.org/wikipedia/en/f/f3/RWS_Tarot_18_Moon.jpg", m: { Love: "သံသယများခြင်း", Money: "လှည့်စားခံရနိုင်ခြင်း", Work: "မရေရာသောလမ်းစ", Health: "စိတ်ပူပန်မှုများခြင်း" } },
-        { n: "The Sun", u: "https://upload.wikimedia.org/wikipedia/en/1/17/RWS_Tarot_19_Sun.jpg", m: { Love: "အရမ်းပျော်ရွှင်ရခြင်း", Money: "ချမ်းသာကြွယ်ဝခြင်း", Work: "အောင်မြင်မှုကြီးရခြင်း", Health: "ကျန်းမာသန်စွမ်းခြင်း" } },
-        { n: "Judgement", u: "https://upload.wikimedia.org/wikipedia/en/d/dd/RWS_Tarot_20_Judgement.jpg", m: { Love: "အမှားသိမြင်ခြင်း", Money: "ငွေအပေးအယူရှင်းခြင်း", Work: "အဖြေထွက်လာခြင်း", Health: "နိုးထတက်ကြွခြင်း" } },
-        { n: "The World", u: "https://upload.wikimedia.org/wikipedia/en/f/ff/RWS_Tarot_21_World.jpg", m: { Love: "ပြည့်စုံသောအချစ်", Money: "ကမ္ဘာပတ်ရနိုင်ခြင်း", Work: "ပန်းတိုင်ရောက်ခြင်း", Health: "လုံးဝကျန်းမာခြင်း" } }
-        // ... Note: For brevity, I've defined Major Arcana here. 
-        // Logic below will dynamically handle Minor Arcana placeholders if needed.
-    ];
-    
-
-    // Placeholder data for 56 Minor Arcana (Wands, Cups, Swords, Pentacles)
+    // Full 78 Cards Structure
+    const tarotDeck = [];
+    const majorNames = ["The Fool", "The Magician", "The High Priestess", "The Empress", "The Emperor", "The Hierophant", "The Lovers", "The Chariot", "Strength", "The Hermit", "Wheel of Fortune", "Justice", "The Hanged Man", "Death", "Temperance", "The Devil", "The Tower", "The Star", "The Moon", "The Sun", "Judgement", "The World"];
     const suits = ["Wands", "Cups", "Swords", "Pentacles"];
-    const ranks = ["Ace", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Page", "Knight", "Queen", "King"];
-    
-    suits.forEach(s => {
-        ranks.forEach((r, i) => {
-            const cardName = ${r} of ${s};
-            // Avoid duplicates with Major Arcana
-            if(!tarotDB.find(c => c.n === cardName)) {
-                let imgPath = https://upload.wikimedia.org/wikipedia/en/${s === 'Pentacles' ? 'Penta' : s}${String(i+1).padStart(2, '0')}.jpg;
-                tarotDB.push({
-                    n: cardName,
-                    u: imgPath,
-                    m: { 
-                        Love: ${s==='Cups'?'အချစ်ရေး':'ဆက်ဆံရေး'} တိုးတက်မှု, 
-                        Money: ${s==='Pentacles'?'ငွေကြေး':'အခြေအနေ'} အပြောင်းအလဲ, 
-                        Work: ${s==='Swords'?'စိန်ခေါ်မှု':'လုပ်ဆောင်ချက်'} ရှိခြင်း, 
-                        Health: "ဂရုစိုက်ရန်လိုခြင်း" 
-                    }
-                });
-            }
+    const ranks = ["Ace", "2", "3", "4", "5", "6", "7", "8", "9", "10", "Page", "Knight", "Queen", "King"];
+
+    // Build 78 cards with category-specific responses
+    // Major Arcana
+    majorNames.forEach((name, i) => {
+        tarotDeck.push({
+            n: name,
+            u: https://upload.wikimedia.org/wikipedia/en/${i < 10 ? '9/90/RWS_Tarot_00_Fool.jpg' : 'd/de/RWS_Tarot_01_Magician.jpg'}, // Placeholder logic - will fix below
+            u: https://upload.wikimedia.org/wikipedia/en/thumb/${getMajorImg(i)},
+            m: { Love: name + " အရ အချစ်ရေးမှာ အပြောင်းအလဲသစ်တွေ တွေ့ရမယ်။", Money: name + " က ငွေကြေးကံကောင်းမှုကို ပြနေပါတယ်။", Health: name + " အရ ကျန်းမာရေး ဂရုစိုက်သင့်ပါတယ်။" }
         });
     });
 
-    const zodiacs = { "Aries": "ရဲရင့်သူ", "Taurus": "တည်ငြိမ်သူ", "Gemini": "ဉာဏ်ရည်ထက်မြက်သူ", "Cancer": "ကြင်နာသူ", "Leo": "ခေါင်းဆောင်ကောင်း", "Virgo": "စနစ်တကျရှိသူ", "Libra": "မျှတသူ", "Scorpio": "ပြတ်သားသူ", "Sagittarius": "လွတ်လပ်သူ", "Capricorn": "ဇွဲရှိသူ", "Aquarius": "ထူးခြားသူ", "Pisces": "စိတ်ကူးယဉ်သူ" };
-
-    let selected = [], userZodiac = "";
-
-    function startReading() {
-        const d = document.getElementById('dob').value;
-        if(!d) return alert("မွေးနေ့ ထည့်ပေးပါဦး။");
-        
-        const date = new Date(d);
-        const m = date.getMonth()+1, dy = date.getDate();
-        if ((m==3 && dy>=21) || (m==4 && dy<=19)) userZodiac = "Aries";
-        else if ((m==4 && dy>=20) || (m==5 && dy<=20)) userZodiac = "Taurus";
-        else if ((m==5 && dy>=21) || (m==6 && dy<=20)) userZodiac = "Gemini";
-        else if ((m==6 && dy>=21) || (m==7 && dy<=22)) userZodiac = "Cancer";
-        else if ((m==7 && dy>=23) || (m==8 && dy<=22)) userZodiac = "Leo";
-        else if ((m==8 && dy>=23) || (m==9 && dy<=22)) userZodiac = "Virgo";
-        else if ((m==9 && dy>=23) || (m==10 && dy<=22)) userZodiac = "Libra";
-        else if ((m==10 && dy>=23) || (m==11 && dy<=21)) userZodiac = "Scorpio";
-        else if ((m==11 && dy>=22) || (m==12 && dy<=21)) userZodiac = "Sagittarius";
-        else if ((m==12 && dy>=22) || (m==1 && dy<=19)) userZodiac = "Capricorn";
-        else if ((m==1 && dy>=20) || (m==2 && dy <=18)) userZodiac = "Aquarius";
-        else userZodiac = "Pisces";
-
-        document.getElementById('zodiac-info').innerText = သင်သည် ${userZodiac} (${zodiacs[userZodiac]}) ရာသီဖွား ဖြစ်ပါသည်။;
-        document.getElementById('screen1').classList.add('hidden');
-        document.getElementById('screen2').classList.remove('hidden');
+    // Fix Major Arcana Images
+    function getMajorImg(i) {
+        const paths = ["9/90/RWS_Tarot_00_Fool.jpg", "d/de/RWS_Tarot_01_Magician.jpg", "8/88/RWS_Tarot_02_High_Priestess.jpg", "d/d2/RWS_Tarot_03_Empress.jpg", "c/c3/RWS_Tarot_04_Emperor.jpg", "8/8d/RWS_Tarot_05_Hierophant.jpg", "d/db/RWS_Tarot_06_Lovers.jpg", "9/9b/RWS_Tarot_07_Chariot.jpg", "f/f2/RWS_Tarot_08_Strength.jpg", "4/4d/RWS_Tarot_09_Hermit.jpg", "3/3c/RWS_Tarot_10_Wheel_of_Fortune.jpg", "e/e0/RWS_Tarot_11_Justice.jpg", "2/2b/RWS_Tarot_12_Hanged_Man.jpg", "d/d7/RWS_Tarot_13_Death.jpg", "f/f8/RWS_Tarot_14_Temperance.jpg", "5/55/RWS_Tarot_15_Devil.jpg", "9/9b/RWS_Tarot_16_Tower.jpg", "d/db/RWS_Tarot_17_Star.jpg", "f/f3/RWS_Tarot_18_Moon.jpg", "1/17/RWS_Tarot_19_Sun.jpg", "d/dd/RWS_Tarot_20_Judgement.jpg", "f/ff/RWS_Tarot_21_World.jpg"];
+        return paths[i];
     }
 
-    function flip(el, num) {
+    // Minor Arcana (Simplified images for stability)
+    suits.forEach(s => {
+        ranks.forEach((r, idx) => {
+            tarotDeck.push({
+                n: ${r} of ${s},
+                u: https://upload.wikimedia.org/wikipedia/en/${s === 'Pentacles' ? 'Penta' : s}${String(idx + 1).padStart(2, '0')}.jpg,
+                m: { Love: ${s} ကဒ်အရ အချစ်ရေးမှာ စိတ်လှုပ်ရှားစရာတွေလာမယ်။, Money: ${s} ကဒ်က စီးပွားရေး တိုးတက်မှုကို ပြပါတယ်။, Health: "ကျန်းမာရေး ပုံမှန်ရှိနေပါတယ်။" }
+            });
+        });
+    });
+
+    let selected = [];
+
+    // ပထမမျက်နှာပြင်မှ ဒုတိယသို့ ပြောင်းခြင်း
+    function switchScreen() {
+        const dob = document.getElementById('dob').value;
+        if(!dob) return alert("မွေးသက္ကရာဇ် ရွေးပေးပါဦးဗျာ။");
+        
+        document.getElementById('setup-screen').classList.add('hidden');
+        document.getElementById('card-screen').classList.remove('hidden');
+    }
+
+    // ကတ်နှိပ်ခြင်း logic
+    function pickCard(el, num) {
         if(el.classList.contains('flipped') || selected.length >= 3) return;
 
         const dob = document.getElementById('dob').value;
+        const q = document.getElementById('question').value;
         const topic = document.getElementById('topic').value;
-        const question = document.getElementById('question').value;
         
-        // Advanced Seed: Birthday + Topic + Question length + Card index
-        const seed = new Date(dob).getTime() + (topic.length * 100) + (question.length * 7) + (num * 13);
+        // Random Seed Logic
+        const seed = new Date(dob).getTime() + q.length + (num * 17);
         const idx = Math.floor((Math.abs(Math.sin(seed)) * 1000) % 78);
-        const card = tarotDB[idx];
+        const card = tarotDeck[idx];
 
-        selected.push(card);
+    selected.push(card);
         document.getElementById('img'+num).src = card.u;
         el.classList.add('flipped');
 
         if(selected.length === 3) {
-            document.getElementById('loading').style.display = 'block';
-            setTimeout(showResult, 2000);
+            setTimeout(showHoro, 800);
         }
     }
 
-    function showResult() {
+    function showHoro() {
         const topic = document.getElementById('topic').value;
-        const ques = document.getElementById('question').value || "အထွေထွေကံကြမ္မာ";
-        const resultArea = document.getElementById('result');
+        const resultDiv = document.getElementById('final-result');
+        let html = <strong>🔮 AI ၏ ဟောစာတမ်း</strong><br><br>;
         
-        let html = <span class="highlight">🔮 နတ်မင်းကြီး၏ AI ဟောစာတမ်း</span><br><br>;
-        html += သင်၏ <span class="highlight">${topic}</span> ဆိုင်ရာ မေးခွန်း (<em>"${ques}"</em>) အတွက် ဟောကြားချက်မှာ -<br><br>;
-        
-        const labels = ["အတိတ်ကာလ", "လက်ရှိအခြေအနေ", "အနာဂတ်အလားအလာ"];
         selected.forEach((c, i) => {
-            html += <b>${labels[i]}:</b> <span class="highlight">${c.n}</span><br>;
-            html += နတ်မင်းကြီး၏ အမြင်တွင် - ${c.m[topic] || c.m.Health}<br><br>;
+            const label = i === 0 ? "အတိတ်" : i === 1 ? "ပစ္စုပ္ပန်" : "အနာဂတ်";
+            html += <b>${label}: ${c.n}</b><br>ဟောချက်: ${c.m[topic]}<br><br>;
         });
 
-        html += <hr style="border: 0.5px solid var(--gold); opacity: 0.3;">;
-        html += <b>AI အကြံပြုချက်:</b> သင်သည် ${userZodiac} ရာသီဖွား ${zodiacs[userZodiac]} တစ်ယောက်ဖြစ်သည့်အတွက် မည်သည့်အခက်အခဲရှိစေကာမူ စိတ်အေးအေးထားပြီး ဆုံးဖြတ်ပါ။ ဤ ${selected[2].n} ကဒ်အရ မကြာခင် အပြောင်းအလဲကောင်းများ ကြုံရပါလိမ့်မည်။;
-
-        document.getElementById('loading').style.display = 'none';
-        resultArea.innerHTML = html;
-        resultArea.style.display = 'block';
+        resultDiv.innerHTML = html;
+        resultDiv.style.display = "block";
         document.getElementById('reset-btn').classList.remove('hidden');
     }
 </script>
