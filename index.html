@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mystic Oracle Tarot Pro - ကံကြမ္မာ၏ လမ်းညွှန်ချက်</title>
+    <style>
+        :root {
+            --primary-bg: #0b0112;
+            --secondary-bg: #1e0536;
+            --accent-gold: #ffcc00;
+            --accent-purple: #7b2cbf;
+            --text-main: #f0e6ff;
+            --text-muted: #b099cc;
+            --card-back: #3c096c;
+            --glow: 0 0 20px rgba(255, 204, 0, 0.5);
+        }
+
+        body {
+            font-family: 'Pyidaungsu', 'Unicode', 'Segoe UI', Tahoma, sans-serif;
+            background-color: var(--primary-bg);
+            color: var(--text-main);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-image: radial-gradient(circle, #1e0536 0%, #0b0112 100%);
+        }
+
+        .container {
+            background-color: rgba(30, 5, 54, 0.9);
+            width: 95%;
+            max-width: 700px;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.9);
+            border: 1px solid rgba(255, 204, 0, 0.3);
+            text-align: center;
+        }
+
+        h1 { color: var(--accent-gold); font-size: 2.2em; text-shadow: 0 0 10px #000; margin-bottom: 5px; }
+        .subtitle { color: var(--text-muted); font-size: 0.9em; margin-bottom: 25px; }
+
+        /* Form Area */
+        .input-group { margin-bottom: 15px; text-align: left; }
+        label { display: block; margin-bottom: 5px; color: var(--accent-gold); font-weight: bold; font-size: 0.9em; }
+        select, input, textarea {
+            width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--accent-purple);
+            background-color: #10002b; color: white; font-size: 1em; box-sizing: border-box;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-gold), #e6b800);
+            color: #10002b; padding: 15px; border: none; border-radius: 50px;
+            font-size: 1.1em; font-weight: bold; cursor: pointer; width: 100%;
+            margin-top: 10px; transition: 0.3s;
+        }
+        .btn-primary:hover { transform: scale(1.02); box-shadow: var(--glow); }
+
+        /* Card Layout */
+        .card-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin: 25px 0;
+            perspective: 1000px;
+        }
+
+        .tarot-card {
+            aspect-ratio: 2/3.5;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+        }
+
+        .tarot-card.flipped { transform: rotateY(180deg); }
+        /* Reversed logic visually */
+        .tarot-card.reversed .card-front img { transform: rotate(180deg); }
+
+        .card-face {
+            position: absolute; width: 100%; height: 100%;
+            backface-visibility: hidden; border-radius: 10px;
+            border: 1px solid var(--accent-gold);
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        .card-back { background: var(--card-back); font-size: 2em; color: var(--accent-gold); }
+        .card-front { background: #fff; transform: rotateY(180deg); overflow: hidden; }
+        .card-front img { width: 100%; height: 100%; object-fit: cover; }
+
+        /* Result Area */
+        .result-box { display: none; text-align: left; background: rgba(0,0,0,0.4); padding: 20px; border-radius: 15px; border-left: 5px solid var(--accent-gold); }
+        .result-item { margin-bottom: 15px; }
+        .result-item b { color: var(--accent-gold); }
+        .conclusion { margin-top: 20px; padding: 15px; background: rgba(123, 44, 191, 0.2); border-radius: 10px; font-style: italic; }
+
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>🔮 Mystic Oracle Pro</h1>
+    <p class="subtitle">စကြဝဠာ၏ လမ်းညွှန်ချက်ကို Tarot ကတ်များမှတစ်ဆင့် ရယူပါ</p>
+
+    <div id="setup-screen">
+        <div class="input-group">
+            <label>ဟောစာတမ်း အမျိုးအစား</label>
+            <select id="topic">
+                <option value="love">❤️ အချစ်ရေး နှင့် လူမှုရေး</option>
+                <option value="work">💼 အလုပ်အကိုင် နှင့် ရည်မှန်းချက်</option>
+                <option value="money">💰 ငွေကြေး နှင့် ကံလာဘ်</option>
+                <option value="health">💪 ကျန်းမာရေး နှင့် စိတ်ခွန်အား</option>
+            </select>
+        </div>
+        <div class="input-group">
+            <label>မွေးသက္ကရာဇ်</label>
+            <input type="date" id="dob">
+        </div>
+        <div class="input-group">
+            <label>သင့်စိတ်ထဲရှိ မေးခွန်း (ရှိလျှင်)</label>
+            <textarea id="question" rows="2" placeholder="ဥပမာ- ကျွန်တော် အလုပ်သစ် ရနိုင်မလား?"></textarea>
+        </div>
+        <button class="btn-primary" onclick="initDeck()">ကတ်များကို စတင်ရွေးချယ်မည်</button>
+    </div>
+
+    <div id="selection-screen" class="hidden">
+        <h2 id="zodiac-tag" style="color:var(--accent-gold)"></h2>
+        <p>အာရုံစိုက်၍ ကတ် (၃) ကတ်ကို တစ်ခုချင်းစီ လှန်ပေးပါ</p>
+        <div class="card-container" id="deck-display">
+            </div>
+        <button id="view-result-btn" class="btn-primary hidden" onclick="showResults()">ဟောစာတမ်းဖတ်မည်</button>
+    </div>
+
+    <div id="result-screen" class="result-box">
+        <h3 style="text-align:center; color: var(--accent-gold)">🔮 ဟောစာတမ်း ရလဒ်</h3>
+        <div id="reading-body"></div>
+        <button class="btn-primary" onclick="location.reload()">နောက်တစ်ကြိမ် ပြန်မေးမည်</button>
+    </div>
+</div>
+
+
+
+<script>
+    // 1. Database: All 22 Major Arcana with Upright/Reversed Meanings
+    const tarotDB = [
+        { id: 0, name: "The Fool", img: "https://upload.wikimedia.org/wikipedia/en/9/90/RWS_Tarot_00_Fool.jpg", up: "အသစ်စတင်ခြင်း၊ လွတ်လပ်မှု။", rev: "မဆင်မခြင်လုပ်မိခြင်း၊ အခွင့်အရေးလွတ်သွားခြင်း။" },
+        { id: 1, name: "The Magician", img: "https://upload.wikimedia.org/wikipedia/en/d/de/RWS_Tarot_01_Magician.jpg", up: "စွမ်းရည်ရှိခြင်း၊ အကောင်အထည်ဖော်နိုင်ခြင်း။", rev: "လှည့်ဖြားခံရခြင်း၊ အရည်အချင်းကို အသုံးမချနိုင်ခြင်း။" },
+        { id: 2, name: "The High Priestess", img: "https://upload.wikimedia.org/wikipedia/en/8/88/RWS_Tarot_02_High_Priestess.jpg", up: "ပင်ကိုယ်သိစိတ်၊ လျှို့ဝှက်ချက်။", rev: "အပေါ်ယံကြည့်မိခြင်း၊ ကိုယ့်ကိုယ်ကိုယ် သံသယဖြစ်ခြင်း။" },
+        { id: 3, name: "The Empress", img: "https://upload.wikimedia.org/wikipedia/en/d/d2/RWS_Tarot_03_Empress.jpg", up: "ဖြစ်ထွန်းမှု၊ သဘာဝတရား၏ အလှအပ။", rev: "တီထွင်မှုအားနည်းခြင်း၊ အမှီအခိုကင်းမဲ့ခြင်း။" },
+        { id: 4, name: "The Emperor", img: "https://upload.wikimedia.org/wikipedia/en/c/c3/RWS_Tarot_04_Emperor.jpg", up: "တည်ငြိမ်မှု၊ အုပ်ချုပ်မှု၊ စနစ်တကျရှိခြင်း။", rev: "တင်းကျပ်လွန်းခြင်း၊ အာဏာပြခံရခြင်း။" },
+        { id: 5, name: "The Hierophant", img: "https://upload.wikimedia.org/wikipedia/en/8/8d/RWS_Tarot_05_Hierophant.jpg", up: "ရိုးရာ၊ ဆရာသမား၊ လမ်းညွှန်မှု။", rev: "တင်းကျပ်သော စည်းကမ်းများ၊ ပုံစံခွက်ထဲနေရခြင်း။" },
+        { id: 6, name: "The Lovers", img: "https://upload.wikimedia.org/wikipedia/en/d/db/RWS_Tarot_06_Lovers.jpg", up: "ရွေးချယ်မှု၊ ဆက်ဆံရေး၊ ဟန်ချက်ညီမှု။", rev: "ရွေးချယ်မှုမှားယွင်းခြင်း၊ သဘောထားကွဲလွဲခြင်း။" },
+        { id: 7, name: "The Chariot", img: "https://upload.wikimedia.org/wikipedia/en/9/9b/RWS_Tarot_07_Chariot.jpg", up: "အောင်မြင်မှု၊ စိတ်ဓာတ်ခိုင်မာခြင်း။", rev: "ထိန်းချုပ်မှုကင်းမဲ့ခြင်း၊ ဦးတည်ချက်ပျောက်ခြင်း။" },
+        { id: 8, name: "Strength", img: "https://upload.wikimedia.org/wikipedia/en/f/f5/RWS_Tarot_08_Strength.jpg", up: "သည်းခံခြင်း၊ အတွင်းစိတ်ခွန်အား။", rev: "ကိုယ့်ကိုယ်ကိုယ် ယုံကြည်မှုနည်းခြင်း၊ စိတ်လိုက်မာန်ပါလုပ်ခြင်း။" },
+        { id: 9, name: "The Hermit", img: "https://upload.wikimedia.org/wikipedia/en/4/4d/RWS_Tarot_09_Hermit.jpg", up: "တစ်ကိုယ်တည်းဆင်ခြင်ခြင်း၊ အဖြေရှာခြင်း။", rev: "အထီးကျန်ခြင်း၊ လမ်းမှားရောက်ခြင်း။" },
+        { id: 10, name: "Wheel of Fortune", img: "https://upload.wikimedia.org/wikipedia/en/3/3c/RWS_Tarot_10_Wheel_of_Fortune.jpg", up: "ကံကြမ္မာအလှည့်အပြောင်း၊ အခွင့်အရေး။", rev: "ကံမကောင်းခြင်း၊ မမျှော်လင့်သော အခက်အခဲ။" },
+        { id: 11, name: "Justice", img: "https://upload.wikimedia.org/wikipedia/en/e/e0/RWS_Tarot_11_Justice.jpg", up: "မျှတမှု၊ တရားမျှတခြင်း။", rev: "မတရားခံရခြင်း၊ တာဝန်မယူချင်ခြင်း။" },
+        { id: 12, name: "The Hanged Man", img: "https://upload.wikimedia.org/wikipedia/en/2/2b/RWS_Tarot_12_Hanged_Man.jpg", up: "စွန့်လွှတ်အနစ်နာခံခြင်း၊ အမြင်သစ်ရခြင်း။", rev: "အချိန်ဖြုန်းမိခြင်း၊ အပြောင်းအလဲကို ငြင်းဆန်ခြင်း။" },
+        { id: 13, name: "Death", img: "https://upload.wikimedia.org/wikipedia/en/d/d7/RWS_Tarot_13_Death.jpg", up: "အဆုံးသတ်ခြင်း နှင့် အသစ်ဖြစ်ပေါ်ခြင်း။", rev: "အပြောင်းအလဲကို ကြောက်ရွံ့ခြင်း၊ ဆုပ်ကိုင်ထားမိခြင်း။" },
+        { id: 14, name: "Temperance", img: "https://upload.wikimedia.org/wikipedia/en/f/f8/RWS_Tarot_14_Temperance.jpg", up: "မျှတစွာနေထိုင်ခြင်း၊ စိတ်ရှည်ခြင်း။", rev: "ဟန်ချက်ပျက်ခြင်း၊ လွန်ကဲခြင်း။" },
+        { id: 15, name: "The Devil", img: "https://upload.wikimedia.org/wikipedia/en/5/55/RWS_Tarot_15_Devil.jpg", up: "စွဲလမ်းမှု၊ အနှောင်အဖွဲ့။", rev: "လွတ်မြောက်ခြင်း၊ အကျင့်ဆိုးကို ဖျောက်နိုင်ခြင်း။" },
+        { id: 16, name: "The Tower", img: "https://upload.wikimedia.org/wikipedia/en/5/53/RWS_Tarot_16_Tower.jpg", up: "ရုတ်တရက်ပြိုလဲခြင်း၊ နိုးထခြင်း။", rev: "ဘေးဒုက္ခကို ရှောင်လွှဲနိုင်ခြင်း၊ အပြောင်းအလဲကို ကြောက်ခြင်း။" },
+        { id: 17, name: "The Star", img: "https://upload.wikimedia.org/wikipedia/en/d/db/RWS_Tarot_17_Star.jpg", up: "မျှော်လင့်ချက်၊ ကုသခြင်း၊ ယုံကြည်ချက်။", rev: "စိတ်ပျက်ခြင်း၊ မျှော်လင့်ချက်မဲ့သလို ခံစားရခြင်း။" },
+        { id: 18, name: "The Moon", img: "https://upload.wikimedia.org/wikipedia/en/f/f3/RWS_Tarot_18_Moon.jpg", up: "စိုးရိမ်ပူပန်မှု၊ လှည့်စားခံရနိုင်ခြင်း။", rev: "အမှန်တရားပေါ်ပေါက်ခြင်း၊ ကြောက်စိတ်ကို ကျော်လွှားခြင်း။" },
+        { id: 19, name: "The Sun", img: "https://upload.wikimedia.org/wikipedia/en/1/17/RWS_Tarot_19_Sun.jpg", up: "အောင်မြင်မှု၊ ပျော်ရွှင်မှု၊ ရှင်းလင်းခြင်း။", rev: "အောင်မြင်မှုနှောင့်နှေးခြင်း၊ အပေါ်ယံပျော်ရွှင်မှု။" },
+        { id: 20, name: "Judgement", img: "https://upload.wikimedia.org/wikipedia/en/d/dd/RWS_Tarot_20_Judgement.jpg", up: "နိုးထခြင်း၊ အတိတ်ကို ပြန်လည်သုံးသပ်ခြင်း။", rev: "ကိုယ့်ကိုယ်ကိုယ် ဝေဖန်လွန်းခြင်း၊ ဆုံးဖြတ်ချက်မှားခြင်း။" },
+        { id: 21, name: "The World", img: "https://upload.wikimedia.org/wikipedia/en/f/ff/RWS_Tarot_21_World.jpg", up: "ပြီးပြည့်စုံခြင်း၊ ခရီးဆုံးသို့ ရောက်ခြင်း။", rev: "အလုပ်မပြီးမြောက်ခြင်း၊ ပိတ်မိနေခြင်း။" }
+    ];
+
+    let currentDeck = [];
+    let selectedIndices = [];
+
+    // 2. Logic: Initialize and Shuffle Deck
+    function initDeck() {
+        const dob = document.getElementById('dob').value;
+        if (!dob) return alert("မွေးသက္ကရာဇ် ထည့်သွင်းပေးပါ။");
+
+        document.getElementById('setup-screen').classList.add('hidden');
+        document.getElementById('selection-screen').classList.remove('hidden');
+        document.getElementById('zodiac-tag').innerText = "🔮 " + calculateZodiac(dob);
+
+        // Shuffle DB and pick first 22 with random rotation (upright or reversed)
+        currentDeck = [...tarotDB].sort(() => Math.random() - 0.5).map(card => {
+            return { ...card, isReversed: Math.random() > 0.7 }; // 30% chance of being reversed
+        });
+
+        renderDeck();
+    }
+
+    function renderDeck() {
+        const display = document.getElementById('deck-display');
+        display.innerHTML = '';
+        for (let i = 0; i < 3; i++) {
+            display.innerHTML += `
+                <div class="tarot-card" id="card-${i}" onclick="flipCard(${i})">
+                    <div class="card-face card-back">?</div>
+                    <div class="card-face card-front" id="front-${i}"></div>
+                </div>
+            `;
+        }
+    }
+
+    function flipCard(idx) {
+        if (selectedIndices.includes(idx)) return;
+        
+        const cardElem = document.getElementById(`card-${idx}`);
+        const cardData = currentDeck[idx];
+        
+        if (cardData.isReversed) cardElem.classList.add('reversed');
+        cardElem.classList.add('flipped');
+        
+        document.getElementById(`front-${idx}`).innerHTML = `<img src="${cardData.img}" alt="${cardData.name}">`;
+        
+        selectedIndices.push(idx);
+        if (selectedIndices.length === 3) {
+            document.getElementById('view-result-btn').classList.remove('hidden');
+        }
+    }
+
+    // 3. Algorithm: "AI" Contextual Reading Generation
+    function showResults() {
+        document.getElementById('selection-screen').classList.add('hidden');
+        document.getElementById('result-screen').style.display = 'block';
+
+        const topic = document.getElementById('topic').value;
+        const topicNames = { love: "အချစ်ရေး", work: "အလုပ်အကိုင်", money: "ငွေကြေး", health: "ကျန်းမာရေး" };
+        const positions = ["အတိတ်/အကြောင်းရင်း", "လက်ရှိအခြေအနေ", "အနာဂတ်လမ်းညွှန်"];
+        
+        let html = `<p>သင်မေးမြန်းသော <b>${topicNames[topic]}</b> နှင့်ပတ်သက်၍ ကတ်များ၏ အဖြေမှာ -</p>`;
+        
+        selectedIndices.forEach((deckIdx, i) => {
+            const card = currentDeck[deckIdx];
+            const meaning = card.isReversed ? card.rev : card.up;
+            const statusText = card.isReversed ? `<span style="color:#ff4d4d">(ပြောင်းပြန်လှန်လျက်)</span>` : `<span style="color:#00ff88">(အမှန်အတိုင်း)</span>`;
+
+            html += `
+                <div class="result-item">
+                    <b>${positions[i]}:</b> ${card.name} ${statusText}<br>
+                    <span>${meaning}</span>
+                </div>
+            `;
+        });
+
+        // Dynamic Conclusion (Mock AI Reasoning)
+        html += `<div class="conclusion">${generateConclusion(topic)}</div>`;
+        document.getElementById('reading-body').innerHTML = html;
+    }
+
+    function generateConclusion(topic) {
+        const prompts = {
+            love: "အချစ်ရေးမှာ စိတ်အေးအေးထားပြီး ကိုယ့်ရင်ခုန်သံကို နားထောင်ပါ။ ဆက်ဆံရေးမှာ ပွင့်လင်းဖို့ လိုအပ်နေပါတယ်။",
+            work: "အလုပ်မှာ အခွင့်အလမ်းသစ်တွေ မြင်တွေ့ရပါလိမ့်မယ်။ ဒါပေမဲ့ ဆုံးဖြတ်ချက်ကို သတိထားချပါ၊ အမှားမခံတဲ့အချိန်ပါ။",
+            money: "ငွေကြေးဝင်ထွက်ကို ထိန်းညှိပါ။ မမျှော်လင့်ဘဲ ကံကောင်းတာမျိုး ကြုံရနိုင်ပေမယ့် အသုံးအစွဲ မကြမ်းပါနဲ့။",
+            health: "စိတ်ဖိစီးမှုက ကျန်းမာရေးကို ထိခိုက်စေနိုင်ပါတယ်။ နားနားနေနေ နေထိုင်ပြီး စိတ်ကို အပန်းဖြေပါ။"
+        };
+        return prompts[topic] || "အရာရာသည် သင့်လက်ထဲမှာသာ ရှိပါသည်။ ယုံကြည်မှုရှိရှိ ရှေ့ဆက်ပါ။";
+    }
+
+    function calculateZodiac(dateStr) {
+        const date = new Date(dateStr);
+        const day = date.getDate();
+        const month = date.getMonth() + 1;
+        if ((month == 3 && day >= 21) || (month == 4 && day <= 19)) return "မိဿ (Aries)";
+        if ((month == 4 && day >= 20) || (month == 5 && day <= 20)) return "ပြိဿ (Taurus)";
+        if ((month == 5 && day >= 21) || (month == 6 && day <= 20)) return "မေထုန် (Gemini)";
+        if ((month == 6 && day >= 21) || (month == 7 && day <= 22)) return "ကရကဋ် (Cancer)";
+        if ((month == 7 && day >= 23) || (month == 8 && day <= 22)) return "သိဟ် (Leo)";
+        if ((month == 8 && day >= 23) || (month == 9 && day <= 22)) return "ကန် (Virgo)";
+        if ((month == 9 && day >= 23) || (month == 10 && day <= 22)) return "တူ (Libra)";
+        if ((month == 10 && day >= 23) || (month == 11 && day <= 21)) return "ဗြိစ္ဆာ (Scorpio)";
+        if ((month == 11 && day >= 22) || (month == 12 && day <= 21)) return "ဓနု (Sagittarius)";
+        if ((month == 12 && day >= 22) || (month == 1 && day <= 19)) return "မကာရ (Capricorn)";
+        if ((month == 1 && day >= 20) || (month == 2 && day <= 18)) return "ကုမ် (Aquarius)";
+        return "မိန် (Pisces)";
+    }
+</script>
+
+</body>
+</html>
