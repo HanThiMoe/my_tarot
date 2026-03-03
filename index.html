@@ -84,8 +84,8 @@
     ];
 
     // Build Database (78 Cards)
-    majors.forEach((m, i) => tarotDB.push({ n: m, u: https://raw.githubusercontent.com/htanmo/tarot-images/main/cards/m${i}.jpg, type: "Major" }));
-    suits.forEach(s => { for(let i=1; i<=14; i++) tarotDB.push({ n: i+" of "+s, u: https://raw.githubusercontent.com/htanmo/tarot-images/main/cards/${s.toLowerCase()}${i}.jpg, type: s }); });
+    majors.forEach((m, i) => tarotDB.push({ n: m, u: 'https://raw.githubusercontent.com/htanmo/tarot-images/main/cards/m${i}.jpg', type: "Major" }));
+    suits.forEach(s => { for(let i=1; i<=14; i++) tarotDB.push({ n: i+" of "+s, u: 'https://raw.githubusercontent.com/htanmo/tarot-images/main/cards/${s.toLowerCase()}${i}.jpg', type: s }); });
 
     let currentZodiac = null, birthSeed = 0;
 
