@@ -3,44 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Mystic Tarot - Deluxe Zodiac Edition</title>
+    <title>AI Mystic Tarot - Scribd Logic Edition</title>
+    <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/121/121303.png">
     <style>
         :root { --gold: #ffd700; --purple: #2d0b5a; --dark: #0f051d; --text: #f0f0f0; }
-        body { font-family: 'Pyidaungsu', sans-serif; background: var(--dark); color: var(--text); margin: 0; padding: 15px; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
-        .container { background: #1a0836; padding: 30px; border-radius: 25px; border: 2px solid var(--gold); max-width: 550px; width: 100%; text-align: center; box-shadow: 0 0 50px rgba(0,0,0,0.8); }
-        h1 { color: var(--gold); text-shadow: 0 0 10px rgba(255,215,0,0.3); }
+        body { font-family: sans-serif; background: var(--dark); color: var(--text); margin: 0; padding: 15px; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        .container { background: #1a0836; padding: 30px; border-radius: 25px; border: 2px solid var(--gold); max-width: 500px; width: 100%; text-align: center; box-shadow: 0 0 50px rgba(0,0,0,0.8); }
         .input-group { text-align: left; margin-bottom: 15px; }
         label { color: var(--gold); display: block; margin-bottom: 8px; font-weight: bold; }
         select, input, textarea { width: 100%; padding: 14px; border-radius: 10px; border: 1.5px solid var(--gold); background: #0f051d; color: white; box-sizing: border-box; font-size: 1em; }
-        .yellow-btn { background: var(--gold); color: #000; padding: 18px; border: none; border-radius: 50px; font-weight: bold; cursor: pointer; width: 100%; font-size: 1.2em; margin-top: 15px; box-shadow: 0 5px 15px rgba(255,215,0,0.2); transition: 0.3s; }
-        .yellow-btn:hover { background: #fff; transform: translateY(-2px); }
+        .yellow-btn { background: var(--gold); color: #000; padding: 18px; border: none; border-radius: 50px; font-weight: bold; cursor: pointer; width: 100%; font-size: 1.2em; margin-top: 15px; box-shadow: 0 5px 15px rgba(255,215,0,0.2); }
         .hidden { display: none !important; }
-        
-        /* Card Layout */
-        .card-row { display: flex; justify-content: center; gap: 15px; margin: 30px 0; flex-wrap: wrap; }
-        .card { width: 110px; height: 180px; border: 2px solid var(--gold); border-radius: 12px; background: #311b92; cursor: pointer; position: relative; transition: 0.6s; transform-style: preserve-3d; }
-        .card img { width: 100%; height: 100%; object-fit: cover; border-radius: 10px; display: none; }
-        .card.flipped { transform: rotateY(180deg); background: #fff; }
+        .card-row { display: flex; justify-content: center; gap: 10px; margin: 25px 0; }
+        .card { width: 100px; height: 170px; border: 2px solid var(--gold); border-radius: 12px; background: #311b92; cursor: pointer; position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        .card img { width: 100%; height: 100%; object-fit: cover; display: none; }
         .card.flipped img { display: block; }
-        .card span { font-size: 2.5em; color: var(--gold); line-height: 180px; }
-
-        .result-box { margin-top: 25px; padding: 25px; background: rgba(0,0,0,0.7); border-radius: 20px; text-align: left; border-top: 5px solid var(--gold); line-height: 1.9; font-size: 1em; animation: slideUp 0.6s ease; }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        .z-info { color: var(--gold); font-weight: bold; font-size: 1.2em; border-bottom: 1px solid rgba(255,215,0,0.3); padding-bottom: 10px; margin-bottom: 15px; }
+        .card.flipped span { display: none; }
+        .card span { font-size: 2.5em; color: var(--gold); }
+        .result-box { margin-top: 25px; padding: 25px; background: rgba(0,0,0,0.7); border-radius: 20px; text-align: left; border-top: 5px solid var(--gold); line-height: 1.9; }
     </style>
 </head>
 <body>
 
 <div class="container">
     <div id="screen1">
-        <h1>🔮 AI Mystic Oracle</h1>
-        <p style="color: #b39ddb; margin-bottom: 25px;">Tarot Meanings & Zodiac Insights</p>
-        
+        <h1 style="color: var(--gold);">🔮 AI Mystic Oracle</h1>
         <div class="input-group">
             <label>ဘာအကြောင်း သိချင်တာလဲ?</label>
             <select id="topic">
                 <option value="Love">❤️ အချစ်ရေး (Relationship)</option>
-                <option value="Money">💰 စီးပွားရေးနှင့် ငွေကြေး (Finance)</option>
+                <option value="Health">⚕️ ကျန်းမာရေး (Health)</option>
+                <option value="Edu">🎓 ပညာရေး (Education)</option>
                 <option value="Work">💼 အလုပ်အကိုင် (Career)</option>
             </select>
         </div>
@@ -50,14 +43,14 @@
         </div>
         <div class="input-group">
             <label>သိလိုသော မေးခွန်း (Question)</label>
-            <textarea id="question" rows="2" placeholder="ဥပမာ - မကြာခင် အလုပ်အကိုင် အဆင်ပြေနိုင်မလား?"></textarea>
+            <textarea id="question" rows="2" placeholder="မေးခွန်းရေးပါ..."></textarea>
         </div>
         <button class="yellow-btn" onclick="startReading()">ကံကြမ္မာကို စစ်ဆေးမည်</button>
     </div>
 
     <div id="screen2" class="hidden">
-        <div id="zodiac-display" class="z-info"></div>
-        <p>အာရုံပြုပြီး ကတ် (၃) ကတ်ကို ရွေးချယ်ပါ</p>
+        <h3 id="zodiac-info" style="color: var(--gold);"></h3>
+        <p>ကတ် (၃) ကတ်ကို ရွေးချယ်ပါ</p>
         <div class="card-row">
             <div id="c1" class="card" onclick="pick(1)"><span>✨</span><img id="img1"></div>
             <div id="c2" class="card" onclick="pick(2)"><span>✨</span><img id="img2"></div>
@@ -67,102 +60,82 @@
         <button id="reset" class="yellow-btn hidden" onclick="location.reload()">အစမှ ပြန်မေးမည်</button>
     </div>
 </div>
-
 <script>
     const tarotDB = [];
-    const majorArcana = ["The Fool", "The Magician", "High Priestess", "Empress", "Emperor", "Hierophant", "Lovers", "Chariot", "Strength", "Hermit", "Wheel of Fortune", "Justice", "Hanged Man", "Death", "Temperance", "Devil", "Tower", "Star", "Moon", "Sun", "Judgement", "World"];
+    const majors = ["The Fool", "The Magician", "High Priestess", "Empress", "Emperor", "Hierophant", "Lovers", "Chariot", "Strength", "Hermit", "Wheel", "Justice", "Hanged Man", "Death", "Temperance", "Devil", "Tower", "Star", "Moon", "Sun", "Judgement", "World"];
     const suits = ["Wands", "Cups", "Swords", "Pentacles"];
 
-    // Zodiac Data based on Characteristics Source
-    const zodiacData = {
-        "Aries": "ရဲရင့်ပြီး တက်ကြွလှုပ်ရှားသူဖြစ်သည်", "Taurus": "တည်ငြိမ်အေးချမ်းပြီး စိတ်ချရသူဖြစ်သည်", 
-        "Gemini": "ဖျတ်လတ်ကာ ဆက်သွယ်ပြောဆိုမှု ကောင်းမွန်သူဖြစ်သည်", "Cancer": "ကြင်နာတတ်ပြီး စိတ်ခံစားမှု နက်နဲသူဖြစ်သည်", 
-        "Leo": "ယုံကြည်ချက်အပြည့်ရှိပြီး ခေါင်းဆောင်နိုင်သူဖြစ်သည်", "Virgo": "စနစ်တကျရှိကာ အသေးစိတ်ကျသူဖြစ်သည်",
-        "Libra": "မျှတမှုကို မြတ်နိုးကာ လူမှုဆက်ဆံရေး ပြေပြစ်သူဖြစ်သည်", "Scorpio": "ပြတ်သားကာ လျှို့ဝှက်ချက်များကို ထိန်းသိမ်းနိုင်သူဖြစ်သည်",
-        "Sagittarius": "လွတ်လပ်မှုကို ချစ်မြတ်နိုးကာ စူးစမ်းလိုသူဖြစ်သည်", "Capricorn": "ဇွဲရှိကာ အောင်မြင်မှုကို လက်တွေ့ကျကျ တည်ဆောက်သူဖြစ်သည်",
-        "Aquarius": "ထူးခြားဆန်းသစ်ကာ လွတ်လပ်စွာ တွေးခေါ်သူဖြစ်သည်", "Pisces": "စိတ်ကူးယဉ်ဆန်ကာ ထိုးထွင်းသိမြင်မှု ကောင်းသူဖြစ်သည်"
+    // Meanings from Scribd Documents
+    const meanings = {
+        Major: { Love: "ကြီးမားသော ချစ်ခြင်း၊ ကံကြမ္မာဆုံဆည်းမှု။", Health: "စိတ်ဓာတ်အင်အားက ခန္ဓာကိုယ်ကို ကုသပေးမည်။", Edu: "အဓိက ပညာရပ်တစ်ခုတွင် ထူးချွန်မည်။", Work: "ဘဝရည်မှန်းချက် မြင့်မားစွာ အောင်မြင်မည်။" },
+        Wands: { Love: "စိတ်လှုပ်ရှားဖွယ် ဆက်ဆံရေး၊ တက်ကြွမှု။", Health: "စွမ်းအင်ပြည့်ဝမှု၊ လေ့ကျင့်ခန်း လိုအပ်ခြင်း။", Edu: "ဖန်တီးမှုပိုင်းဆိုင်ရာတွင် အောင်မြင်မှုရရှိမည်။", Work: "ဦးဆောင်မှုပေးရမည့် အလုပ်သစ်များ ရလာမည်။" },
+        Cups: { Love: "နက်ရှိုင်းသော သံယောဇဉ်၊ စိတ်ခံစားမှု။", Health: "စိတ်ဖိစီးမှုကြောင့် ကျန်းမာရေး ထိခိုက်နိုင်။", Edu: "အနုပညာနှင့် လူမှုရေးပညာရပ်များတွင် ထူးချွန်မည်။", Work: "စိတ်ကျေနပ်မှုရစေမည့် လုပ်ငန်းခွင်အခြေအနေ။" },
+        Swords: { Love: "ပွင့်လင်းစွာ ဆွေးနွေးရန် လိုအပ်သောအချိန်။", Health: "အတွေးလွန်ခြင်းကြောင့် ခေါင်းကိုက်ခြင်း ဖြစ်နိုင်။", Edu: "ခွဲခြမ်းစိတ်ဖြာမှုပိုင်းတွင် အမှတ်ကောင်းရမည်။", Work: "စိန်ခေါ်မှုများသော ဆုံးဖြတ်ချက်များ ချရမည်။" },
+        Pentacles: { Love: "တည်ငြိမ်သော၊ လက်တွေ့ဆန်သော အချစ်။", Health: "အစားအသောက်နှင့် နေထိုင်မှုပုံစံ ဂရုစိုက်ပါ။", Edu: "လက်တွေ့အသုံးချ ပညာရပ်များတွင် အောင်မြင်မည်။", Work: "ငွေကြေးအကျိုးအမြတ်နှင့် ရာထူးတက်ခြင်း။" }
     };
 
-    // Card Generator (78 Cards)
-    majorArcana.forEach((m, i) => {
-        tarotDB.push({ n: m, u: https://raw.githubusercontent.com/htanmo/tarot-images/main/cards/m${i}.jpg, 
-        Love: "The Big Book အရ အချစ်ရေးတွင် အရေးကြီးသော အပြောင်းအလဲများ စတင်မည်။", 
-        Money: "ငွေကြေးကံလမ်းပွင့်နေပြီး အခွင့်အရေးသစ်များ ရရှိမည်။", 
-        Work: "လုပ်ငန်းခွင်တွင် မမျှော်လင့်ထားသော တိုးတက်မှုများ မြင်တွေ့ရမည်။" });
-    });
-    suits.forEach(s => {
-        for(let i=1; i<=14; i++) {
-            tarotDB.push({ n: i+" of "+s, u: https://raw.githubusercontent.com/htanmo/tarot-images/main/cards/${s.toLowerCase()}${i}.jpg,
-            Love: s + " ကဒ်၏ စွမ်းအင်ကြောင့် ဆက်ဆံရေးတွင် နားလည်မှု ပိုယူရန်လိုသည်။", 
-            Money: s + " အရ ငွေကြေး စီမံခန့်ခွဲမှုကို ပိုမိုစနစ်တကျ လုပ်ရန် လိုအပ်သည်။", 
-            Work: s + " သည် အလုပ်တွင် ကြိုးစားမှု၏ အသီးအပွင့်များကို ပြသနေသည်။" });
-        }
-    });
+    const zodiacs = [
+        {n: "မိဿ (Aries)", k: "Aries", m: 3, d: 21, em: 4, ed: 19}, {n: "ပြိဿ (Taurus)", k: "Taurus", m: 4, d: 20, em: 5, ed: 20},
+        {n: "မေထုန် (Gemini)", k: "Gemini", m: 5, d: 21, em: 6, ed: 20}, {n: "ကရကဋ် (Cancer)", k: "Cancer", m: 6, d: 21, em: 7, ed: 22},
+        {n: "သိဟ် (Leo)", k: "Leo", m: 7, d: 23, em: 8, ed: 22}, {n: "ကန် (Virgo)", k: "Virgo", m: 8, d: 23, em: 9, ed: 22},
+        {n: "တူ (Libra)", k: "Libra", m: 9, d: 23, em: 10, ed: 22}, {n: "ဗြိစ္ဆာ (Scorpio)", k: "Scorpio", m: 10, d: 23, em: 11, ed: 21},
+        {n: "ဓနု (Sagittarius)", k: "Sagittarius", m: 11, d: 22, em: 12, ed: 21}, {n: "မကာရ (Capricorn)", k: "Capricorn", m: 12, d: 22, em: 1, ed: 19},
+        {n: "ကုံ (Aquarius)", k: "Aquarius", m: 1, d: 20, em: 2, ed: 18}, {n: "မိန် (Pisces)", k: "Pisces", m: 2, d: 19, em: 3, ed: 20}
+    ];
 
-    let userZodiac = "";
+    // Build Database (78 Cards)
+    majors.forEach((m, i) => tarotDB.push({ n: m, u: https://raw.githubusercontent.com/htanmo/tarot-images/main/cards/m${i}.jpg, type: "Major" }));
+    suits.forEach(s => { for(let i=1; i<=14; i++) tarotDB.push({ n: i+" of "+s, u: https://raw.githubusercontent.com/htanmo/tarot-images/main/cards/${s.toLowerCase()}${i}.jpg, type: s }); });
+
+    let currentZodiac = null, birthSeed = 0;
 
     function startReading() {
         const d = document.getElementById('dob').value;
-        if(!d) return alert("မွေးသက္ကရာဇ် ရွေးချယ်ပေးပါဗျာ။");
-        
+        if(!d) return alert("မွေးနေ့ ထည့်ပါဦးဗျာ။");
         const date = new Date(d);
-        const m = date.getMonth()+1, dy = date.getDate();
-        if ((m==3 && dy>=21) || (m==4 && dy<=19)) userZodiac = "Aries";
-        else if ((m==4 && dy>=20) || (m==5 && dy<=20)) userZodiac = "Taurus";
-        else if ((m==5 && dy>=21) || (m==6 && dy<=20)) userZodiac = "Gemini";
-        else if ((m==6 && dy>=21) || (m==7 && dy<=22)) userZodiac = "Cancer";
-        else if ((m==7 && dy>=23) || (m==8 && dy<=22)) userZodiac = "Leo";
-        else if ((m==8 && dy>=23) || (m==9 && dy<=22)) userZodiac = "Virgo";
-        else if ((m==9 && dy>=23) || (m==10 && dy<=22)) userZodiac = "Libra";
-        else if ((m==10 && dy>=23) || (m==11 && dy<=21)) userZodiac = "Scorpio";
-        else if ((m==11 && dy>=22) || (m==12 && dy<=21)) userZodiac = "Sagittarius";
-        else if ((m==12 && dy>=22) || (m==1 && dy<=19)) userZodiac = "Capricorn";
-        else if ((m==1 && dy>=20) || (m==2 && dy<=18)) userZodiac = "Aquarius";
-        else userZodiac = "Pisces";
-        document.getElementById('zodiac-display').innerText = ✨ Your Zodiac: ${userZodiac};
-        document.getElementById('screen1').classList.add('hidden');
+        birthSeed = date.getTime();
+        const m = date.getUTCMonth() + 1, dy = date.getUTCDate();
+        
+        currentZodiac = zodiacs.find(z => (m == z.m && dy >= z.d) || (m == z.em && dy <= z.ed));
+        
+        document.getElementById('zodiac-info').innerText = "✨ ရာသီခွင်: " + currentZodiac.n;
+        document.getElementById('screen1').classList.add('hidden'); // Page Switch
         document.getElementById('screen2').classList.remove('hidden');
     }
 
-    let picks = [];
+    let picked = [];
     function pick(num) {
-        const el = document.getElementById('c' + num);
-        if(el.classList.contains('flipped') || picks.length >= 3) return;
+        const el = document.getElementById('c'+num);
+        if(el.classList.contains('flipped') || picked.length >= 3) return;
 
-        const dob = document.getElementById('dob').value;
-        const seed = new Date(dob).getTime() + (num * 77) + document.getElementById('topic').value.length;
-        const idx = Math.floor((Math.abs(Math.sin(seed)) * 2000) % 78);
+        // Deterministic Picking based on birthSeed
+        const idx = Math.floor((Math.abs(Math.sin(birthSeed + num)) * 1000) % 78);
         const card = tarotDB[idx];
-
-        picks.push(card);
-        document.getElementById('img' + num).src = card.u;
+        picked.push(card);
+        
+        document.getElementById('img'+num).src = card.u;
         el.classList.add('flipped');
 
-        if(picks.length === 3) {
-            setTimeout(generateReading, 800);
-        }
+        if(picked.length === 3) showFinalResult();
     }
-
-    function generateReading() {
+                        function showFinalResult() {
         const topic = document.getElementById('topic').value;
-        const zodiacTrait = zodiacData[userZodiac];
-        const ques = document.getElementById('question').value || "အထွေထွေကံကြမ္မာ";
-        let res = <strong>🔮 AI Mystic Reading for ${userZodiac}</strong><br><br>;
-        res += သင်သည် <span style="color:var(--gold)">${userZodiac}</span> ရာသီဖွား တစ်ယောက်ဖြစ်ပြီး ${zodiacTrait} ကြောင့် - <br><br>;
+        const topicName = document.getElementById('topic').options[document.getElementById('topic').selectedIndex].text;
         
-        const labels = ["အတိတ် (Past)", "ပစ္စုပ္ပန် (Present)", "အနာဂတ် (Future)"];
-        picks.forEach((p, i) => {
-            res += <b>${labels[i]}: ${p.n}</b><br>;
-            res += ဤကဒ်သည် သင်၏ ${topic} ဆိုင်ရာ မေးခွန်း (<em>"${ques}"</em>) အတွက် ${p[topic]} သင်၏ ${userZodiac} စရိုက်နှင့် ပေါင်းစပ်ကြည့်ပါက ဤအခြေအနေသည် သင့်အတွက် အခွင့်အလမ်းကောင်းတစ်ခု ဖြစ်စေပါမည်။<br><br>;
+        let res = <center><h3 style="color:var(--gold)">🔮 Scribd Mystic Analysis</h3></center>;
+        res += <b>ရာသီခွင်:</b> ${currentZodiac.n}<br>;
+        res += <b>ရွေးချယ်ထားသော ကဏ္ဍ:</b> ${topicName}<br><hr>;
+
+        picked.forEach((p, i) => {
+            const label = ["အတိတ်", "ပစ္စုပ္ပန်", "အနာဂတ်"][i];
+            const answer = meanings[p.type][topic]; // Topic-specific answer logic
+            res += <p><b>${label}: ${p.n}</b><br>သင်ရွေးချယ်ထားသော ${topicName} ပိုင်းတွင် ${answer}</p>;
         });
 
-        res += <hr style="opacity:0.3"><b>နတ်မင်းကြီး၏ အကြံပြုချက်:</b> သင်၏ ${userZodiac} စွမ်းအင်ကို အသုံးချပြီး ယုံကြည်ချက်ရှိရှိ ရှေ့ဆက်ပါ။;
-        
         document.getElementById('output').innerHTML = res;
         document.getElementById('output').classList.remove('hidden');
         document.getElementById('reset').classList.remove('hidden');
     }
 </script>
-
 </body>
 </html>
